@@ -66,4 +66,4 @@ jobs:
        with:
           context: Docker-files/app/
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/actapp:${{ github.run_number }},${{secrets.DOCKER_USERNAME}}/actapp:latest 
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/actapp:${{ github.run_number }},${{ secrets.DOCKERHUB_USERNAME }}/actapp:latest 
