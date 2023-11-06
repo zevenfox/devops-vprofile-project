@@ -1,7 +1,7 @@
 name: Pikabo Workflow
 on: workflow_dispatch
 jobs:
-  first-job:
+  Testing:
     runs-on: ubuntu-latest
     steps:
      - name: Code checkout
@@ -45,6 +45,10 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_URL }} #OPTIONAL
     
+  Build And Publish:
+   needs: Testing
+   runs-on: ubuntu-latest
+   steps:
      - name: Set up QEMU
        uses: docker/setup-qemu-action@v3
 
@@ -62,4 +66,4 @@ jobs:
        with:
           context: Docker-files/app/
           push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/actapp:${{ github.run_number }},${{secrets.DOCKER_USERNAME}}/actapp:latest 
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/actapp:${{ github.run_number }},${{secrets.DOCKER_USERNAME}}/actapp:latest 
