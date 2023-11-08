@@ -28,10 +28,9 @@ jobs:
          repo: actapp
          region: us-east-2
          tags: latest,${{ github.sha }}
-         create_repo: true
          image_scanning_configuration: true
-         set_repo_policy: true
-         repo_policy_file: repo-policy.json
+#         set_repo_policy: true
+#         repo_policy_file: repo-policy.json
      
      #- name: Build and push
      #  uses: docker/build-push-action@v5
