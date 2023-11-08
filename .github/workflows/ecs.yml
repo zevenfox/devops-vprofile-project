@@ -28,10 +28,10 @@ jobs:
        with:
          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         registry: 716657688884.dkr.ecr.us-east-2.amazonaws.com
+         registry: ${{ secrets.REGISTRY }}
          repo: actapp
          region: us-east-2
-         tag: latest
+         tag: latest,${{ github.sha }} 
          daemon_off: false
          dockerfile: ./Dockerfile
          context: ./
