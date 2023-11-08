@@ -19,9 +19,9 @@ jobs:
    #       username: ${{ secrets.DOCKERHUB_USERNAME }}
    #       password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-     - name: Build and push the tagged docker image to Amazon ECR
-       run: |
-            docker build -t ${{ secrets.REGISTRY }}:latest .
+   #  - name: Build and push the tagged docker image to Amazon ECR
+   #    run: |
+   #         docker build -t ${{ secrets.REGISTRY }}:latest .
            
      - name: upload image to ECR
        uses: appleboy/docker-ecr-action@master
