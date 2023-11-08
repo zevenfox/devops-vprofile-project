@@ -12,12 +12,12 @@ jobs:
   Build_And_Publish:
    runs-on: ubuntu-latest
    steps:
-     - name: Code checkout
-       uses: actions/checkout@v4
+      - name: Code checkout
+        uses: actions/checkout@v4
            
-     - name: upload image to ECR
-       uses: appleboy/docker-ecr-action@master
-       with:
+      - name: upload image to ECR
+        uses: appleboy/docker-ecr-action@master
+        with:
          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          registry: ${{ secrets.REGISTRY }}
@@ -34,7 +34,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-          
+
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
