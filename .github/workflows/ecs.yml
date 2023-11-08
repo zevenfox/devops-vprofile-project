@@ -1,27 +1,19 @@
 name: Pikabo Workflow
 on: workflow_dispatch
+env:
+  AWS_REGION: us-east-2                  # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: actapp           # set this to your Amazon ECR repository name
+  ECS_SERVICE: vproappsvc32                # set this to your Amazon ECS service name
+  ECS_CLUSTER: vprostaging32               # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: vproappstagetask # set this to the path to your Amazon ECS task definition                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: vproapp           # set this to the name of the container in the
+                                               # containerDefinitions section of your task definition
 jobs:
   Build_And_Publish:
    runs-on: ubuntu-latest
    steps:
      - name: Code checkout
        uses: actions/checkout@v4
-
-   #  - name: Set up QEMU
-   #    uses: docker/setup-qemu-action@v3
-
-   #  - name: Set up Docker Buildx
-   #    uses: docker/setup-buildx-action@v3
-
-   #  - name: Login to Docker Hub
-   #    uses: docker/login-action@v3
-   #    with:
-   #       username: ${{ secrets.DOCKERHUB_USERNAME }}
-   #       password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-   #  - name: Build and push the tagged docker image to Amazon ECR
-   #    run: |
-   #         docker build -t ${{ secrets.REGISTRY }}:latest .
            
      - name: upload image to ECR
        uses: appleboy/docker-ecr-action@master
@@ -30,29 +22,31 @@ jobs:
          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          registry: ${{ secrets.REGISTRY }}
          repo: actapp
-         region: us-east-2
+         region: ${{ env.AWS_REGION }}
          tags: latest,${{ github.run_number }}
          daemon_off: false
          dockerfile: ./Dockerfile
          context: ./
-     #- name: BUILD AND PUSH TO ECR
-     #  uses: docker://ghcr.io/kciter/aws-ecr-action:latest
-     #  with:
-     #    access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-     #    secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-     #    account_id: 716657688884
-     #    repo: actapp
-     #    region: us-east-2
-     #    #tags: latest,${{ github.sha }}         
-     #    tags: latest
-         #path: ./Dockerfile
-         #image_scanning_configuration: true
-#         set_repo_policy: true
-#         repo_policy_file: repo-policy.json
-     
-     #- name: Build and push
-     #  uses: docker/build-push-action@v5
-     #  with:
-     #     context: ./
-     #     push: true
-     #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/actapp:${{ github.run_number }},${{ secrets.DOCKERHUB_USERNAME }}/actapp:latest 
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: 716657688884.dkr.ecr.us-east-2.amazonaws.com/actapp:${{ github.run_number }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
