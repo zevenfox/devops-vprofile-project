@@ -2,7 +2,6 @@ name: Pikabo Workflow
 on: workflow_dispatch
 jobs:
   Build_And_Publish:
-   needs: Testing
    runs-on: ubuntu-latest
    steps:
      - name: Code checkout
