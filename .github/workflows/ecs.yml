@@ -28,7 +28,7 @@ jobs:
        with:
          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         registry: ${{ secrets.REGISTRY }}
+         registry: 716657688884.dkr.ecr.us-east-2.amazonaws.com
          repo: actapp
          region: us-east-2
          tag: latest
