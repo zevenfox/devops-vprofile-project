@@ -41,7 +41,7 @@ jobs:
          region: us-east-2
          #tags: latest,${{ github.sha }}         
          tags: latest
-         dockerfile: ./Dockerfile
+         path: ./Dockerfile
          #image_scanning_configuration: true
 #         set_repo_policy: true
 #         repo_policy_file: repo-policy.json
