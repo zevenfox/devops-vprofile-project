@@ -20,10 +20,8 @@ jobs:
    #       password: ${{ secrets.DOCKERHUB_TOKEN }}
 
      - name: Build and push the tagged docker image to Amazon ECR
-          env:
-            IMAGE_TAG: latest
-          run: |
-            docker build -t ${{ secrets.REGISTRY }}:$IMAGE_TAG .
+       run: |
+            docker build -t ${{ secrets.REGISTRY }}:latest .
            
      - name: upload image to ECR
        uses: appleboy/docker-ecr-action@master
