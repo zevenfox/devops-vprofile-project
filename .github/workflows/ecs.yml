@@ -15,7 +15,7 @@ jobs:
       - name: Code checkout
         uses: actions/checkout@v4
            
-      - name: upload image to ECR
+      - name: Build & Upload image to ECR
         uses: appleboy/docker-ecr-action@master
         with:
          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -41,7 +41,7 @@ jobs:
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
-          image: 716657688884.dkr.ecr.us-east-2.amazonaws.com/actapp:${{ github.run_number }}
+          image: ${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.run_number }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
