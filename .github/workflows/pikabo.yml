@@ -69,7 +69,7 @@ jobs:
        with:
          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+         account_id: 716657688884
          repo: actapp
          region: us-east-2
          tags: latest,${{ github.sha }}
