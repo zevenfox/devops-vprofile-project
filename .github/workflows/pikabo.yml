@@ -64,9 +64,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-     - name: Build and push
-       uses: docker/build-push-action@v5
+     - name: BUILD AND PUSH TO ECR
+       uses: docker://ghcr.io/kciter/aws-ecr-action:latest
        with:
-          context: ./
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/actapp:${{ github.run_number }},${{ secrets.DOCKERHUB_USERNAME }}/actapp:latest 
+         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+         repo: docker/repo
+         region: us-east-2
+         tags: latest,${{ github.sha }}
+         create_repo: true
+         image_scanning_configuration: true
+         set_repo_policy: true
+         repo_policy_file: repo-policy.json
+     
+     #- name: Build and push
+     #  uses: docker/build-push-action@v5
+     #  with:
+     #     context: ./
+     #     push: true
+     #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/actapp:${{ github.run_number }},${{ secrets.DOCKERHUB_USERNAME }}/actapp:latest 
