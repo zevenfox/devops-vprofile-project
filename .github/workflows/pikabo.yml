@@ -80,7 +80,7 @@ jobs:
          context: ./
 
   Deploy:
-   needs: Testing
+   needs: Build_And_Publish
    runs-on: ubuntu-latest
    steps:
       - name: Configure AWS credentials
