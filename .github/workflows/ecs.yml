@@ -23,7 +23,7 @@ jobs:
    #    run: |
    #         docker build -t ${{ secrets.REGISTRY }}:latest .
            
-     - name: upload image to ECR
+     - name: Build & upload image to ECR
        uses: appleboy/docker-ecr-action@master
        with:
          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
