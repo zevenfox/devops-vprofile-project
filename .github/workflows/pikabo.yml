@@ -1,5 +1,12 @@
 name: Pikabo Workflow
 on: workflow_dispatch
+env:
+  AWS_REGION: us-east-2                  # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: actapp           # set this to your Amazon ECR repository name
+  ECS_SERVICE: vproappsvc32                # set this to your Amazon ECS service name
+  ECS_CLUSTER: vprostaging32               # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: aws-files/taskdeffile.json # set this to the path to your Amazon ECS task definition                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: vproapp           # set this to the name of the container in the
 jobs:
   Testing:
     runs-on: ubuntu-latest
