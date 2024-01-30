@@ -13,3 +13,4 @@ COPY --from=BUILD_IMAGE devops-vprofile-project/target/vprofile-v2.war /usr/loca
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
+
